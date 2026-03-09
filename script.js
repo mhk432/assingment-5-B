@@ -143,12 +143,12 @@ async function renderIssues(filter) {
   filtered.forEach(issue => {
     const prioClass = getPriorityBadge(issue.priority);
     const card = document.createElement('div');
-    card.className = `bg-white rounded-lg shadow hover:shadow-md cursor-pointer border-t-4 ${issue.status?.toLowerCase() === 'open' ? 'border-green-500' : 'border-purple-500'}`;
+    card.className = `bg-white rounded-lg cursor-pointer border-t-4 ${issue.status?.toLowerCase() === 'open' ? 'border-green-500' : 'border-purple-500'}`;
 
     card.innerHTML = `
       <div class="p-4 space-y-3">
         <div class="flex items-center justify-between gap-2 mb-2">
-          <div class="inline-flex items-center justify-center w-7 h-7 rounded-full ${getPriorityBgOnly(issue.priority)}">
+          <div class="inline-flex items-center justify-center w-10 h-10 rounded-full ${getPriorityBgOnly(issue.priority)}">
             ${getPriorityIcon(issue.priority)}
           </div>
           <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${prioClass}">
@@ -157,7 +157,7 @@ async function renderIssues(filter) {
         </div>
         <h3 class="font-semibold mb-1 line-clamp-2">${issue.title}</h3>
         <p class="text-sm text-gray-600 mb-3 line-clamp-3">${issue.description || 'No description...'}</p>
-        <div class="flex flex-wrap gap-2 mb-3">
+        <div class="flex flex-wrap items-center gap-2 min-h-[40px]">
           ${issue.labels?.map(l => {
             let cls = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800';
             if (l.toLowerCase() === 'bug') cls = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800';
@@ -165,10 +165,10 @@ async function renderIssues(filter) {
             if (l.toLowerCase() === 'enhancement' || l.toLowerCase().includes('feature')) cls = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800';
             if (l.toLowerCase() === 'documentation') cls = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800';
 
-            return `<span class="${cls}">
-              ${getLabelIcon(l)}
-              ${l}
-            </span>`;
+            return `<span class="${cls} whitespace-nowrap">
+  ${getLabelIcon(l)}
+  ${l}
+</span>`;
           }).join(' ') || '<span class="text-xs text-gray-500">No labels</span>'}
         </div>
         <hr>
@@ -200,25 +200,44 @@ async function renderIssues(filter) {
 
     
       const labelsContainer = document.getElementById('modalLabelsContainer');
-      labelsContainer.innerHTML = '';
-      if (issue.labels && issue.labels.length > 0) {
-        issue.labels.forEach(l => {
-          const label = document.createElement('span');
-          let labelClass = 'badge px-3 py-1.5 text-xs font-medium rounded-full ';
-          if (l.toLowerCase() === 'bug') {
-            labelClass += 'bg-red-100 text-red-800 border border-red-300';
-          } else if (l.toLowerCase().includes('help wanted')) {
-            labelClass += 'bg-yellow-100 text-yellow-800 border border-yellow-300';
-          } else {
-            labelClass += 'bg-gray-100 text-gray-800 border border-gray-300';
-          }
-          label.className = labelClass;
-          label.textContent = l.toUpperCase();
-          labelsContainer.appendChild(label);
-        });
-      } else {
-        labelsContainer.innerHTML = '<span class="text-sm text-gray-500">No labels</span>';
-      }
+labelsContainer.innerHTML = '';
+
+if (issue.labels && issue.labels.length > 0) {
+
+  issue.labels.forEach(l => {
+
+    const label = document.createElement('span');
+
+    let cls = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800';
+
+    if (l.toLowerCase() === 'bug') {
+      cls = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800';
+    }
+
+    if (l.toLowerCase().includes('help wanted')) {
+      cls = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800';
+    }
+
+    if (l.toLowerCase() === 'enhancement' || l.toLowerCase().includes('feature')) {
+      cls = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800';
+    }
+
+    if (l.toLowerCase() === 'documentation') {
+      cls = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800';
+    }
+
+    label.className = cls;
+    label.textContent = l;
+
+    labelsContainer.appendChild(label);
+
+  });
+
+} else {
+
+  labelsContainer.innerHTML = '<span class="text-sm text-gray-500">No labels</span>';
+
+}
 
       // Assignee
       document.getElementById('modalAssignee').textContent = issue.author || 'Unassigned';
