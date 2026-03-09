@@ -1,18 +1,28 @@
-
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GitHub Issues Tracker</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
   <style>
-    .tab-active { background-color:  #4A00FF !important; color: white !important; }
-    .tab[data-tab="open"].tab-active { background-color: #16a34a !important; }
-    .tab[data-tab="closed"].tab-active { background-color: #ef4444 !important; }
+    .tab-active {
+      background-color: #4A00FF !important;
+      color: white !important;
+    }
+
+    .tab[data-tab="open"].tab-active {
+      background-color: #16a34a !important;
+    }
+
+    .tab[data-tab="closed"].tab-active {
+      background-color: #ef4444 !important;
+    }
   </style>
 </head>
+
 <body class="bg-gray-200 min-h-screen my-10">
 
   <!-- Login Section -->
@@ -30,12 +40,12 @@
         <p class="mb-6 text-[#4A00FF]">Default: admin123</p>
         <button type="submit" class="btn btn-primary w-full mb-6">Sign In</button>
       </form>
-      
+
       <div class="mx-auto text-center">
         <p class="my-5">Demo Credentials:</p>
         <div class="bg-slate-100 rounded-md px-28 py-4">
-            <p> <span class="font-bold">Username: </span>admin</p>
-            <p><span class="font-bold"> Password:</span>admin123</p>
+          <p> <span class="font-bold">Username: </span>admin</p>
+          <p><span class="font-bold"> Password:</span>admin123</p>
         </div>
       </div>
     </div>
@@ -51,10 +61,9 @@
         <a class="btn btn-ghost text-xl">GitHub Issues Tracker</a>
       </div>
       <div class="flex-none gap-2 ">
-        <input id="searchInput" type="text" placeholder="Search issues..." 
-        class="input input-bordered" />
+        <input id="searchInput" type="text" placeholder="Search issues..." class="input input-bordered" />
 
-        
+
         <button id="searchBtn" class=" rounded-md px-2 py-2  bg-[#4A00FF] text-white">
           + New Issue
         </button>
@@ -71,12 +80,13 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Header with count and dots -->
     <div class="max-w-6xl mx-auto px-4 py-6 border-b border-gray-200">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div class="flex items-center gap-2">
-          <div class="w-12 h-12 bg-slate-300 rounded-full flex items-center justify-center"><img src="./assets/Aperture.png" alt=""></div>
+          <div class="w-12 h-12 bg-slate-300 rounded-full flex items-center justify-center"><img
+              src="./assets/Aperture.png" alt=""></div>
           <div>
             <h2 id="issueCountText" class="text-2xl font-bold">0 Issues</h2>
             <p class="text-gray-600">Track and manage your project issues</p>
@@ -101,62 +111,62 @@
     </div>
 
     <!-- Issues Grid -->
-    <div id="issuesGrid" class=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4 max-w-6xl mx-auto"></div>
+    <div id="issuesGrid"
+      class=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-4 max-w-6xl mx-auto"></div>
 
-    <!-- Modal - screenshot এর মতো exact design -->
+    
     <!-- Modal -->
-<dialog id="issueModal" class="modal">
-  <div class="modal-box max-w-3xl bg-white rounded-2xl shadow-2xl p-8">
+    <dialog id="issueModal" class="modal">
+      <div class="modal-box max-w-3xl bg-white rounded-2xl shadow-2xl p-8">
 
-    <!-- Title -->
-    <h3 id="modalTitle" class="text-2xl font-bold text-gray-900 mb-4"></h3>
+        <!-- Title -->
+        <h3 id="modalTitle" class="text-2xl font-bold text-gray-900 mb-4"></h3>
 
-    <!-- Status + author + date -->
-    <div class="flex flex-wrap items-center gap-3 text-sm mb-3">
-      <span id="modalStatus" class="px-4 py-1 rounded-full text-white text-xs font-semibold"></span>
+        <!-- Status + author + date -->
+        <div class="flex flex-wrap items-center gap-3 text-sm mb-3">
+          <span id="modalStatus" class="px-4 py-1 rounded-full text-white text-xs font-semibold"></span>
 
-      <span class="text-gray-600">
-        • Opened by <span id="modalAuthor" class="font-medium text-gray-900"></span>
-      </span>
+          <span class="text-gray-600">
+            • Opened by <span id="modalAuthor" class="font-medium text-gray-900"></span>
+          </span>
 
-      <span id="modalCreated" class="text-gray-500"></span>
-    </div>
+          <span id="modalCreated" class="text-gray-500"></span>
+        </div>
 
-    <!-- Labels -->
-    <div id="modalLabelsContainer" class="flex flex-wrap gap-2 mb-5"></div>
+        <!-- Labels -->
+        <div id="modalLabelsContainer" class="flex flex-wrap gap-2 mb-5"></div>
 
-    <!-- Description -->
-    <p id="modalDesc" class="text-gray-700 leading-relaxed mb-6"></p>
+        <!-- Description -->
+        <p id="modalDesc" class="text-gray-700 leading-relaxed mb-6"></p>
 
-    <!-- Assignee + Priority -->
-    <div class="bg-gray-100 rounded-xl p-6 flex justify-between items-center mb-6">
+        <!-- Assignee + Priority -->
+        <div class="bg-gray-100 rounded-xl p-6 flex justify-between items-center mb-6">
 
-      <div>
-        <p class="text-gray-500 text-sm mb-1">Assignee:</p>
-        <p id="modalAssignee" class="font-semibold text-gray-900"></p>
+          <div>
+            <p class="text-gray-500 text-sm mb-1">Assignee:</p>
+            <p id="modalAssignee" class="font-semibold text-gray-900"></p>
+          </div>
+
+          <div>
+            <p class="text-gray-500 text-sm mb-1">Priority:</p>
+            <span id="modalPriority" class="px-4 py-1 rounded-full text-white text-sm font-semibold"></span>
+          </div>
+
+        </div>
+
+        <!-- Close Button -->
+        <div class="flex justify-end">
+          <button onclick="issueModal.close()"
+            class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-6 py-2 rounded-lg shadow-lg hover:scale-105 transition">
+            Close
+          </button>
+        </div>
+
       </div>
-
-      <div>
-        <p class="text-gray-500 text-sm mb-1">Priority:</p>
-        <span id="modalPriority"
-          class="px-4 py-1 rounded-full text-white text-sm font-semibold"></span>
-      </div>
-
-    </div>
-
-    <!-- Close Button -->
-    <div class="flex justify-end">
-      <button
-        onclick="issueModal.close()"
-        class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-6 py-2 rounded-lg shadow-lg hover:scale-105 transition">
-        Close
-      </button>
-    </div>
-
-  </div>
-</dialog>
+    </dialog>
   </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>
