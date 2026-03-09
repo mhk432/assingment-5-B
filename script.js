@@ -165,10 +165,10 @@ async function renderIssues(filter) {
             if (l.toLowerCase() === 'enhancement' || l.toLowerCase().includes('feature')) cls = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800';
             if (l.toLowerCase() === 'documentation') cls = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800';
 
-            return `<span class="${cls} whitespace-nowrap">
-  ${getLabelIcon(l)}
-  ${l}
-</span>`;
+         return `<span class="${cls} flex-nowrap">
+           ${getLabelIcon(l)}
+          ${l}
+       </span>`;
           }).join(' ') || '<span class="text-xs text-gray-500">No labels</span>'}
         </div>
         <hr>
